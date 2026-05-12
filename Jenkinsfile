@@ -3,17 +3,19 @@ pipeline {
     label 'k8s-slave'
   }
   environment {
-    REGISTRY_URL = "docker.io"
+    REGISTRY_URL =  "docker.io"
     IMAGE_REPOSITORY = "dileepk8s/i27project-ui-microservice"
   }
+  //prepareing the tag for the image to be built
   stages {
-    stage('prepare tag') {
+    stage ('prepare tag') {
       steps {
+        env.IMAGE_NAME = env.REGISTRY_URL + env.IMAGE_REPOSITORY 
         echo "Using Registry URL: ${env.REGISTRY_URL}"
         echo "Using Image Repository: ${env.IMAGE_REPOSITORY}"
         echo "Using Image Tag: ${GIT_COMMIT}"
+        echo "Full Image Name: ${env.IMAGE_NAME}:${GIT_COMMIT}"
       }
     }
-    //stage ('Build Docker Image')
   }
 }
