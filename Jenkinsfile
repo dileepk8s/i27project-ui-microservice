@@ -6,6 +6,7 @@ pipeline{
     REGISTRY_URL =  "docker.io"
     IMAGE_REPOSITORY = "dileepk8s/i27project-ui-microservice"
   }
+  //prepareing the tag for the image to be built
   stages {
     stage ('prepare tag') {
       steps {
