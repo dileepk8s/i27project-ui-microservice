@@ -3,7 +3,7 @@ pipeline {
     label 'k8s-slave'
   }
   parameters {
-    booleanParameter(name: 'BUILD', defaultValue: true, description: "Run build and push image")
+      booleanParam(name: 'BUILD', defaultValue: true, description: "Run build and push image")
   }
   environment {
     REGISTRY_URL =  "docker.io"
