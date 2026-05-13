@@ -4,7 +4,7 @@ pipeline {
   }
   parameters {
       booleanParam(name: 'BUILD', defaultValue: true, description: "Run build and push image")
-      choice(name: 'TRAGET_ENV', choices: ['dev', 'test', 'stage', 'prod']), description: "Target environement for API url"
+      choice(name: 'TRAGET_ENV', choices: ['dev', 'test', 'stage', 'prod'], description: "Target environement for API url")
   }
   environment {
     REGISTRY_URL =  "docker.io"
