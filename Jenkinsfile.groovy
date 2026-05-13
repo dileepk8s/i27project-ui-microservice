@@ -9,7 +9,7 @@ pipeline {
   environment {
     REGISTRY_URL =  "docker.io"
     IMAGE_REPOSITORY = "dileepdocker5535/i27project-ui-microservice"
-    REGISTRY_CREDENTIALS = "credentials(docker_creds)"
+    DOCKER_CREDS = credentials('docker_creds')
   }
   //prepareing the tag for the image to be built
   stages {
@@ -59,7 +59,7 @@ pipeline {
       }
       steps {
         echo "************DOCKER LOGIN************"
-        sh "echo docker login -u ${env.REGISTRY_CREDENTIALS_ID_USR} -p ${env.REGISTRY_CREDENTIALS_ID_PSW} ${env.REGISTRY_URL}"
+        sh "echo ${DOCKER_CREDS_PSW} | docker login -u ${DOCKER_CREDS_USR} --password-stdin ${REGISTRY_URL}"
         echo "************DOCKER PUSH************"
         sh "docker push ${env.IMAGE_NAME}:${GIT_COMMIT}"
       }
