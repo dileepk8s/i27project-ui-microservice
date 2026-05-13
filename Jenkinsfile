@@ -40,6 +40,19 @@ pipeline {
         
       }
     }
+    stage ('SonarQube Analysis') {
+        when {
+          expression {
+            return params.BUILD
+          }
+        }
+        script {
+          def scannerHome =tool  'SonarQubeScanner'
+          withSonarQubeEnv('SonarQube') {
+            sh "${scannerHome}/bin/sonar-scanner"
+          }
+        }
+    }
     stage ('build docker image') {
       when {
         expression {
