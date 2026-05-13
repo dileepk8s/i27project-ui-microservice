@@ -12,11 +12,12 @@ pipeline {
       steps {
         script {
           env.IMAGE_NAME = "${env.REGISTRY_URL}/${env.IMAGE_REPOSITORY}"
+          echo "Using Registry URL: ${env.REGISTRY_URL}"
+          echo "Using Image Repository: ${env.IMAGE_REPOSITORY}"
+          echo "Using Image Tag: ${GIT_COMMIT}"
+          echo "Full Image Name: ${env.IMAGE_NAME}:${GIT_COMMIT}"
         }
-        echo "Using Registry URL: ${env.REGISTRY_URL}"
-        echo "Using Image Repository: ${env.IMAGE_REPOSITORY}"
-        echo "Using Image Tag: ${GIT_COMMIT}"
-        echo "Full Image Name: ${env.IMAGE_NAME}:${GIT_COMMIT}"
+        
       }
     }
   }
