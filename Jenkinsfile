@@ -4,6 +4,7 @@ pipeline {
   }
   parameters {
       booleanParam(name: 'BUILD', defaultValue: true, description: "Run build and push image")
+      choice(name: 'TRAGET_ENV', choices: ['dev', 'test', 'stage', 'prod']), description: "Target environement for API url"
   }
   environment {
     REGISTRY_URL =  "docker.io"
@@ -20,6 +21,16 @@ pipeline {
       steps {
         script {
           env.IMAGE_NAME = "${env.REGISTRY_URL}/${env.IMAGE_REPOSITORY}"
+          switch(params.TRAGET_ENV) {
+            case 'dev': env.NEXT_PUBLIC_API_BASE_URL = 'http://35.202.143.16:8080'
+              break
+            case 'test': env.NEXT_PUBLIC_API_BASE_URL = 'http://test-gateway.i27helpdesk.in'
+              break
+            case 'stage': env.NEXT_PUBLIC_API_BASE_URL = 'http://stage-gateway.i27helpdesk.in'
+              break
+            case 'prod': env.NEXT_PUBLIC_API_BASE_URL = 'http://gateway.i27helpdesk.in'
+              break
+          }
           echo "Using Registry URL: ${env.REGISTRY_URL}"
           echo "Using Image Repository: ${env.IMAGE_REPOSITORY}"
           echo "Using Image Tag: ${GIT_COMMIT}"
@@ -36,7 +47,7 @@ pipeline {
       }
       steps {
         echo "Building the image"
-        //sh "docker build -t ${env.IMAGE_NAME}:${GIT_COMMIT}  --build-arg  NEXT_PUBLIC_API_BASE_URL=http://35.202.143.16:8080 ."
+        sh "docker build -t ${env.IMAGE_NAME}:${GIT_COMMIT}  --build-arg  NEXT_PUBLIC_API_BASE_URL=${env.NEXT_PUBLIC_API_BASE_URL} ."
       }
     }
   }
