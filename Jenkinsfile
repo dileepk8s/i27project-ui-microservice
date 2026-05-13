@@ -59,7 +59,7 @@ pipeline {
       }
       steps {
         echo "************DOCKER LOGIN************"
-        sh "docker login -u ${env.REGISTRY_CREDENTIALS_ID_USR} -p ${env.REGISTRY_CREDENTIALS_ID_PSW} ${env.REGISTRY_URL}"
+        sh "docker login -u ${env.REGISTRY_CREDENTIALS_ID_USR} -p ${env.REGISTRY_CREDENTIALS_ID_PASS} ${env.REGISTRY_URL}"
         echo "************DOCKER PUSH************"
         sh "docker push ${env.IMAGE_NAME}:${GIT_COMMIT}"
       }
