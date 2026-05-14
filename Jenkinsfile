@@ -9,7 +9,7 @@ pipeline {
   environment {
     REGISTRY_URL =  "docker.io"
     IMAGE_REPOSITORY = "dileepdocker5535/i27-ui-microservice"
-    REGISTRY_CREDENTIALS = "credentials(docker_creds)"
+    REGISTRY_CREDENTIALS = credentials('docker_creds')
   }
   //prepareing the tag for the image to be built
   stages {
