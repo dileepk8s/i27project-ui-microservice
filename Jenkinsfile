@@ -121,6 +121,27 @@ pipeline {
         }
       }
     }
+    stage ('deploy to dev environment') {
+      //Gke cluster should be available
+      //kubectl should be configured to access the cluster
+      //slave should be having confige file to connect the cluster
+      //create k8s manifest file and make them apply into our namesapce 
+      //create reuseable code for all environment deployment and use the same code for all environment with different parameters
+      when {
+        expression {
+          return params.BUILD && params.TRAGET_ENV == 'dev'
+        }
+      }
+      steps {
+        script {
+          sh '''
+          echo "*****************Deploying to Dev Environment*****************************"
+          echo "Deploying in the namespace: ${NAMESPACE}"
+          kubectl get get pods -n ${NAMESPACE}
+          '''
+        }
+      }
+    }
   }
   post {
     always {
