@@ -109,16 +109,15 @@ pipeline {
         expression {
           return params.TRAGET_ENV == 'dev'
         }
-        steps {
-          script {
-            sh """
-            echo "**********************Authenticating to GKE cluster****************************"
-            gcloud container clusters get-credentials ${env.DEV_CLUSTER_NAME} --zone ${env.DEV_CLUSTER_ZONE} --project ${env.DEV_CLUSTER_PROJECT}
-
-            echo "**********************Validating GKE cluster Access****************************"
-            kubectl get nodes
-            """
-          }
+      }
+      steps {
+        script {
+          """
+          echo "*****************Authenticating to GKE Cluster*****************************"
+          gcloud container clusters get-credentials ${env.DEV_CLUSTER_NAME} --zone ${env.DEV_CLUSTER_ZONE} --project ${env.DEV_CLUSTER_PROJECT}
+          echo "*****************Validating the cluster access*****************************"
+          kubectl get nodes
+          """
         }
       }
     }
