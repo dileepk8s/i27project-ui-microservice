@@ -110,7 +110,7 @@ pipeline {
           return params.TRAGET_ENV == 'dev'
         }
         steps {
-          script{
+          script {
             sh """
             echo "**********************Authenticating to GKE cluster****************************"
             gcloud container clusters get-credentials ${env.DEV_CLUSTER_NAME} --zone ${env.DEV_CLUSTER_ZONE} --project ${env.DEV_CLUSTER_PROJECT}
