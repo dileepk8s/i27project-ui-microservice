@@ -55,6 +55,18 @@ pipeline {
         }
       }
     }
+    stage ('Quality Gate') {
+      when {
+        expression {
+          return params.BUILD
+        }
+      }
+      steps {
+        timeout(time: 2, unit: 'MINUTES') {
+          waitForQualityGate abortPipeline: true
+        }
+      }
+    }
     stage ('build docker image') {
       when {
         expression {
@@ -82,6 +94,19 @@ pipeline {
       }
     }
 
+  }
+  stages {
+    post {
+      always {
+        cleanWs()
+      }
+      success {
+        echo "Pipeline completed successfully!"
+      }
+      failure {
+        echo "Pipeline failed. Please check the logs for details."
+      }
+    }
   }
 }
 
