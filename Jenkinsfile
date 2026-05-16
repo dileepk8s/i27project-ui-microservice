@@ -142,7 +142,7 @@ pipeline {
           #substitute variables in the manifest files
           sed-i "s|\\${NAMESPACE}|${NAMESPACE}|g" k8s/*yaml
           sed -i "s|\\${IMAGE_NAME}|${IMAGE_NAME}|g" k8s/deploy.yaml
-          sed-i "s|\\${IMAGE_TAG}|${GIT_COMMIT}|g" k8s/deploy.yaml
+          sed -i "s|\\${IMAGE_TAG}|${GIT_COMMIT}|g" k8s/deploy.yaml
           echo "Applying Kubernetes manifests in dev namespace"
           kubectl apply -f k8s/
           echo "Deployment to Dev Environment completed successfully!"
