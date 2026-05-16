@@ -134,6 +134,7 @@ pipeline {
       }
       steps {
         script {
+          env.NAMESPACE = "i27-helpdesk-dev"
           sh '''
           echo "*****************Deploying to Dev Environment*****************************"
           echo "Deploying in the namespace: ${NAMESPACE}"
