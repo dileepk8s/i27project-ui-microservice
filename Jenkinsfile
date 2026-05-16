@@ -94,6 +94,22 @@ pipeline {
         sh "docker push ${env.IMAGE_NAME}:${GIT_COMMIT}"
       }
     }
+    stage ('deploy to dev environment') {
+      //Gke cluster should be available 
+      //kubectl should be configured to access the cluster
+      //slave should be having confige file to connect the cluster
+    }
+  }
+  post {
+    always {
+      cleanWs()
+    }
+    success {
+      echo "Pipeline completed successfully!"
+    }
+    failure {
+      echo "Pipeline failed. Please check the logs for details."
+    }
   }
 }
 
