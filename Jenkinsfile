@@ -11,6 +11,11 @@ pipeline {
     REGISTRY_URL =  "docker.io"
     IMAGE_REPOSITORY = "dileepdocker5535/i27-ui-microservice"
     REGISTRY_CREDENTIALS = credentials('docker_creds')
+    // kubernetes Dev Cluser Details
+    DEV_CLUSTER_NAME = "np-cluster"
+    DEV_CLUSTER_ZONE = "us-east4-a"
+    DEV_CLUSTER_PROJECT = "dileepk8s-495003"
+     // kubernetes Test Cluser Details
   }
   //prepareing the tag for the image to be built
   stages {
@@ -99,6 +104,24 @@ pipeline {
       //kubectl should be configured to access the cluster
       //slave should be having confige file to connect the cluster
     //}
+    stage ('GKE AUTH') {
+      when {
+        expression {
+          return params.TRAGET_ENV == 'dev'
+        }
+        steps {
+          script{
+            sh """
+            echo "**********************Authenticating to GKE cluster****************************"
+            gcloud container clusters get-credentials ${env.DEV_CLUSTER_NAME} --zone ${env.DEV_CLUSTER_ZONE} --project ${env.DEV_CLUSTER_PROJECT}
+
+            echo "**********************Validating GKE cluster Access****************************"
+            kubectl get nodes
+            """
+          }
+        }
+      }
+    }
   }
   post {
     always {
