@@ -93,7 +93,7 @@ pipeline {
         sh "docker push ${env.IMAGE_NAME}:${GIT_COMMIT}"
       }
     }
-    stage {
+    stage ('clean workspace') {
       post {
         always {
           cleanWs()
