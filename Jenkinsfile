@@ -93,21 +93,32 @@ pipeline {
         sh "docker push ${env.IMAGE_NAME}:${GIT_COMMIT}"
       }
     }
-
-  }
-  stages {
-    post {
-      always {
-        cleanWs()
-      }
-      success {
-        echo "Pipeline completed successfully!"
-      }
-      failure {
-        echo "Pipeline failed. Please check the logs for details."
+    stage {
+      post {
+        always {
+          cleanWs()
+        }
+        success {
+          echo "Pipeline completed successfully!"
+        }
+        failure {
+          echo "Pipeline failed. Please check the logs for details."
+        }
       }
     }
   }
 }
 
-///S
+///Sstages {
+//    post {
+//      always {
+ //       cleanWs()
+ //     }
+ //     success {
+ //       echo "Pipeline completed successfully!"
+  //    }
+  //    failure {
+  //      echo "Pipeline failed. Please check the logs for details."
+  //    }
+  //  }
+ //}
