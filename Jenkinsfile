@@ -5,6 +5,7 @@ pipeline {
   parameters {
       booleanParam(name: 'BUILD', defaultValue: true, description: "Run build and push image")
       choice(name: 'TRAGET_ENV', choices: ['dev', 'test', 'stage', 'prod'], description: "Target environement for API url")
+      booleanParam(name: 'SKIP_SONAR', defaultValue: false, description: "Skip SonarQube analysis and Quality Gate")
   }
   environment {
     REGISTRY_URL =  "docker.io"
@@ -43,7 +44,7 @@ pipeline {
     stage ('SonarQube Analysis') {
       when {
         expression {
-          return params.BUILD
+          return params.BUILD && !params.SKIP_SONAR
         }
       }
       steps {
@@ -58,7 +59,7 @@ pipeline {
     stage ('Quality Gate') {
       when {
         expression {
-          return params.BUILD
+          return params.BUILD && !params.SKIP_SONAR
         }
       }
       steps {
