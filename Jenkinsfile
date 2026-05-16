@@ -112,7 +112,7 @@ pipeline {
       }
       steps {
         script {
-          """
+          sh """
           echo "*****************Authenticating to GKE Cluster*****************************"
           gcloud container clusters get-credentials ${env.DEV_CLUSTER_NAME} --zone ${env.DEV_CLUSTER_ZONE} --project ${env.DEV_CLUSTER_PROJECT}
           echo "*****************Validating the cluster access*****************************"
