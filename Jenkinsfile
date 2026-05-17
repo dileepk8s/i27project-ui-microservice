@@ -4,7 +4,7 @@ pipeline {
   }
   parameters {
       booleanParam(name: 'BUILD', defaultValue: true, description: "Run build and push image")
-      choice(name: 'TRAGET_ENV', choices: ['dev', 'test', 'stage', 'prod'], description: "Target environement for API url")
+      choice(name: 'TRAGET_ENV', choices: ['n/a','dev', 'test', 'stage', 'prod'], description: "Target environement for API url")
       booleanParam(name: 'SKIP_SONAR', defaultValue: false, description: "Skip SonarQube analysis and Quality Gate")
   }
   environment {
