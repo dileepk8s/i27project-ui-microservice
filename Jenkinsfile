@@ -121,7 +121,7 @@ pipeline {
         }
       }
     }
-    stage ('deploy to dev environment') {
+    stage ('Deploy To Dev Environment') {
       //Gke cluster should be available
       //kubectl should be configured to access the cluster
       //slave should be having confige file to connect the cluster
@@ -146,6 +146,93 @@ pipeline {
           echo "Applying Kubernetes manifests in dev namespace"
           kubectl apply -f k8s/
           echo "Deployment to Dev Environment completed successfully!"
+          '''
+        }
+      }
+    }
+    stage ('Deploy To Test Environment') {
+      //Gke cluster should be available
+      //kubectl should be configured to access the cluster
+      //slave should be having confige file to connect the cluster
+      //create k8s manifest file and make them apply into our namesapce 
+      //create reuseable code for all environment deployment and use the same code for all environment with different parameters
+      when {
+        expression {
+          return params.BUILD && params.TRAGET_ENV == 'test'
+        }
+      }
+      steps {
+        script {
+          env.NAMESPACE = "i27-helpdesk-test"
+          sh '''
+          echo "*****************Deploying to Test Environment*****************************"
+          echo "Deploying in the namespace: ${NAMESPACE}"
+          kubectl get  pods -n ${NAMESPACE}
+          #substitute variables in the manifest files
+          sed -i "s|\\${NAMESPACE}|${NAMESPACE}|g" k8s/*yaml
+          sed -i "s|\\${IMAGE_NAME}|${IMAGE_NAME}|g" k8s/deploy.yaml
+          sed -i "s|\\${IMAGE_TAG}|${GIT_COMMIT}|g" k8s/deploy.yaml
+          echo "Applying Kubernetes manifests in test namespace"
+          kubectl apply -f k8s/
+          echo "Deployment to Test Environment completed successfully!"
+          '''
+        }
+      }
+    }
+    stage ('Deploy To Stage Environment') {
+      //Gke cluster should be available
+      //kubectl should be configured to access the cluster
+      //slave should be having confige file to connect the cluster
+      //create k8s manifest file and make them apply into our namesapce 
+      //create reuseable code for all environment deployment and use the same code for all environment with different parameters
+      when {
+        expression {
+          return params.BUILD && params.TRAGET_ENV == 'stage'
+        }
+      }
+      steps {
+        script {
+          env.NAMESPACE = "i27-helpdesk-stage"
+          sh '''
+          echo "*****************Deploying to Stage Environment*****************************"
+          echo "Deploying in the namespace: ${NAMESPACE}"
+          kubectl get  pods -n ${NAMESPACE}
+          #substitute variables in the manifest files
+          sed -i "s|\\${NAMESPACE}|${NAMESPACE}|g" k8s/*yaml
+          sed -i "s|\\${IMAGE_NAME}|${IMAGE_NAME}|g" k8s/deploy.yaml
+          sed -i "s|\\${IMAGE_TAG}|${GIT_COMMIT}|g" k8s/deploy.yaml
+          echo "Applying Kubernetes manifests in stage namespace"
+          kubectl apply -f k8s/
+          echo "Deployment to Stage Environment completed successfully!"
+          '''
+        }
+      }
+    }
+    stage ('Deploy To Prod Environment') {
+      //Gke cluster should be available
+      //kubectl should be configured to access the cluster
+      //slave should be having confige file to connect the cluster
+      //create k8s manifest file and make them apply into our namesapce 
+      //create reuseable code for all environment deployment and use the same code for all environment with different parameters
+      when {
+        expression {
+          return params.BUILD && params.TRAGET_ENV == 'prod'
+        }
+      }
+      steps {
+        script {
+          env.NAMESPACE = "i27-helpdesk-prod"
+          sh '''
+          echo "*****************Deploying to Prod Environment*****************************"
+          echo "Deploying in the namespace: ${NAMESPACE}"
+          kubectl get  pods -n ${NAMESPACE}
+          #substitute variables in the manifest files
+          sed -i "s|\\${NAMESPACE}|${NAMESPACE}|g" k8s/*yaml
+          sed -i "s|\\${IMAGE_NAME}|${IMAGE_NAME}|g" k8s/deploy.yaml
+          sed -i "s|\\${IMAGE_TAG}|${GIT_COMMIT}|g" k8s/deploy.yaml
+          echo "Applying Kubernetes manifests in prod namespace"
+          kubectl apply -f k8s/
+          echo "Deployment to Prod Environment completed successfully!"
           '''
         }
       }
