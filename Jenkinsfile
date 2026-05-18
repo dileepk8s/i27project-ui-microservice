@@ -185,9 +185,13 @@ pipeline {
       //slave should be having confige file to connect the cluster
       //create k8s manifest file and make them apply into our namesapce 
       //create reuseable code for all environment deployment and use the same code for all environment with different parameters
-      when {
-        expression {
-          return params.BUILD && params.TRAGET_ENV == 'stage'
+      when { 
+        allOf {
+          expression { return params.BUILD && params.TRAGET_ENV == 'stage'}
+          anyOf {
+            branch 'release*'
+            tag pattern: "v\\d{1,2}\\.\\d{1,2}\\.\\d{1,2}", comparator: "REGEXP'"
+          }
         }
       }
       steps {
@@ -215,8 +219,13 @@ pipeline {
       //create k8s manifest file and make them apply into our namesapce 
       //create reuseable code for all environment deployment and use the same code for all environment with different parameters
       when {
-        expression {
-          return params.BUILD && params.TRAGET_ENV == 'prod'
+        allOf {
+          expression {return params.BUILD && params.TRAGET_ENV == 'prod'}
+          //v1.2.3
+          //v.1.2.3
+          anyOf {
+            tag pattern: "v\\d{1,2}\\.\\d{1,2}\\.\\d{1,2}", comparator: "REGEXP'"
+          }
         }
       }
       steps {
