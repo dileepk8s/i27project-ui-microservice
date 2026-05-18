@@ -81,7 +81,7 @@ pipeline {
       }
       steps {
         echo "Building the image"
-        sh "docker build -t ${env.IMAGE_NAME}:${GIT_COMMIT}  --build-arg  NEXT_PUBLIC_API_BASE_URL=${env.NEXT_PUBLIC_API_BASE_URL} ."
+        sh "docker build --no-cache -t ${env.IMAGE_NAME}:${GIT_COMMIT}  --build-arg  NEXT_PUBLIC_API_BASE_URL=${env.NEXT_PUBLIC_API_BASE_URL} ."
       }
     }
     stage ('push docker image') {
